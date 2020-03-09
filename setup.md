@@ -21,6 +21,8 @@ cansend can0n123#1122334455667788
 
 # setup scoketcand
 
+```
 socketcand -v -n -i vcan0 -l lo -p 29536
+```
 
 
