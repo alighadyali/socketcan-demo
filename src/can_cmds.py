@@ -11,19 +11,26 @@ import math
 import binascii
 import struct
 
+
 class CanBus:
 
     def __init__(self, ip, port):
         self.ip = ip
         self.port = port
 
-    def writer(self):
+    def write(self, data):
+        print(data)
         nc = nclib.Netcat((self.ip, self.port), udp=False, verbose=False)
         nc.recv()
         nc.send(b'< open vcan0 >')
         nc.recv_until(b'>')
-        nc.send(b'< send 456 0 >')
-        #can_id_indexed = self.writer
+        nc.send(b'< send ' + self.formatCanID(data['can_id']) +
+                self.prepareInt8as1Bytes(data['length']) +
+                self.prepareInt8as1Bytes(data['b1']) + b' >')
+        nc.shutdown()
+
+    def formatCanID(self, can_id):
+        return can_id.encode() + b' '
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
