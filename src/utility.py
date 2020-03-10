@@ -11,8 +11,7 @@ import math
 import binascii
 import struct
 
-
-class CanBus:
+class Writer:
 
     def __init__(self, ip, port):
         self.ip = ip
@@ -23,14 +22,18 @@ class CanBus:
         nc = nclib.Netcat((self.ip, self.port), udp=False, verbose=False)
         nc.recv()
         nc.send(b'< open vcan0 >')
-        nc.recv_until(b'>')
-        nc.send(b'< send ' + self.formatCanID(data['can_id']) +
-                self.prepareInt8as1Bytes(data['length']) +
-                self.prepareInt8as1Bytes(data['b1']) + b' >')
+        nc.send(data)
         nc.shutdown()
 
+class Formatter:
     def formatCanID(self, can_id):
         return can_id.encode() + b' '
+
+    def beginFrame(self, can_id):
+        return b'< send ' + can_id.encode() + b' '
+
+    def endFrame(self):
+        return b' >'
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 

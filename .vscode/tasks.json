@@ -8,9 +8,9 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "label": "run cansend",
+            "label": "run driver",
             "type": "shell",
-            "command": "python3 src/cansend.py"
+            "command": "python3 src/main.py"
         }
     ]
 }
